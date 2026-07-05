@@ -1,0 +1,25 @@
+services:
+  db:
+    image: postgres:18
+    container_name: notes-postgres
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+  api:
+    build: .
+    container_name: notes-api
+    restart: always
+    env_file:
+      - .env.docker
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
